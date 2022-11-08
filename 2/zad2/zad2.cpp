@@ -12,6 +12,7 @@ class Line_writer {
 		}
     	virtual ~Line_writer() {
       		file.close();
+			cout << "File closed." << endl;
     	}
 };
 
