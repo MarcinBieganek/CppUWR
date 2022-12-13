@@ -94,5 +94,14 @@ int main() {
     cout << endl << "=======   After randomly shuffle:   =================" << endl;
     printDeq(deq);
 
+    // min max
+    auto min_max = minmax_element(deq.begin(), deq.end(), [](Person& p1, Person& p2) {
+        return p1.age < p2.age;
+    });
+
+    cout << endl << "=======   After min max:   =================" << endl;
+    cout << "youngest: " << deq[min_max.first - deq.begin()].printfy() << endl;
+    cout << "oldest: " << deq[min_max.second - deq.begin()].printfy() << endl;
+
   	return 0;
 }
