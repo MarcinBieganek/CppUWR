@@ -31,6 +31,9 @@ class RGB {
         string printfy() {
             return "(" + to_string(red) + " , " + to_string(green) + " , " + to_string(blue) + ")";
         }
+        float lumi() {
+            return 0.3 * red + 0.59 * green + 0.11 * blue;
+        }
 };
 
 class Point {
@@ -105,6 +108,14 @@ int main() {
     cout << "Number in II: " << countII << endl;
     cout << "Number in III: " << countIII << endl;
     cout << "Number in IV: " << countIV << endl;
+
+    // sort by lumination
+    list.sort([](Point& p1, Point& p2) {
+        return p1.color.lumi() < p2.color.lumi();
+    });
+
+    cout << endl << "=======   After sort:   =================" << endl;
+    printList(list);
 
   	return 0;
 }
