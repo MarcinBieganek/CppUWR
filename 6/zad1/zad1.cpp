@@ -56,7 +56,6 @@ int main() {
     });
 
     cout << endl << "=======   After sort:   =================" << endl;
-
     printDeq(deq);
 
     // transform weight by 10%
@@ -66,7 +65,6 @@ int main() {
     });
 
     cout << endl << "=======   After transform:   =================" << endl;
-
     printDeq(deq);
 
     // partition by weight
@@ -75,16 +73,25 @@ int main() {
     });
 
     cout << endl << "=======   After partition:   =================" << endl;
-
     printDeq(deq);
 
     // 5 person by height at 5 index
-    nth_element(deq.begin(), deq.begin() + (deq.size() / 2) - 1, deq.end(), [](Person& p1, Person& p2) {
+    nth_element(deq.begin(), deq.begin() + (deq.size() / 2), deq.end(), [](Person& p1, Person& p2) {
         return p1.height < p2.height;
     });
 
     cout << endl << "=======   After 5th element by height:   =================" << endl;
+    printDeq(deq);
 
+    // randomly shuffle first 5 and last 5 elements
+    random_shuffle(deq.begin(), deq.begin() + (deq.size() / 2) - 1, [](int i) {
+        return rand() % i;
+    });
+    random_shuffle(deq.begin() + (deq.size() / 2) + 1, deq.end(), [](int i) {
+        return rand() % i;
+    });
+
+    cout << endl << "=======   After randomly shuffle:   =================" << endl;
     printDeq(deq);
 
   	return 0;
