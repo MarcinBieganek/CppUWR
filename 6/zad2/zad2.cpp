@@ -41,10 +41,11 @@ class Point {
     	string name;
         Coordinates position;
         RGB color;
+        Point(): position(0.0, 0.0), color(0, 0, 0) {
+            name = "";
+        }
         Point(string n, Coordinates p, RGB c): position(p), color(c) {
             name = n;
-            position = p;
-            color = c;
         };
         string printfy() {
             return name + " " + position.printfy() + " " + color.printfy();
@@ -58,7 +59,7 @@ void printList(list<Point> l) {
 }
 
 int main() {
-	list<Point> list = {
+	list<Point> li = {
         Point("p1", Coordinates(0.5, 0.5), RGB(0, 0, 0)),
         Point("p2", Coordinates(1.0, 0.5), RGB(0, 255, 0)),
         Point("p3", Coordinates(2.0, 0.5), RGB(0, 0, 255)),
@@ -78,28 +79,28 @@ int main() {
         Point("p17", Coordinates(0.5, -10.0), RGB(150, 150, 255)),
     };
 
-    printList(list);
+    printList(li);
 
     // delete names longer than 5
-    list.erase(remove_if(list.begin(), list.end(), [](Point& p) {
+    li.erase(remove_if(li.begin(), li.end(), [](Point& p) {
                     return p.name.length() > 5;
                 }),
-                list.end());
+                li.end());
     
     cout << endl << "=======   After delete:   =================" << endl;
-    printList(list);
+    printList(li);
 
     // count I, II, III, IV part of plane
-    int countI = count_if(list.begin(), list.end(), [](Point& p) {
+    int countI = count_if(li.begin(), li.end(), [](Point& p) {
                     return p.position.x > 0.0 && p.position.y > 0.0;
                 });
-    int countII = count_if(list.begin(), list.end(), [](Point& p) {
+    int countII = count_if(li.begin(), li.end(), [](Point& p) {
                     return p.position.x < 0.0 && p.position.y > 0.0;
                 });
-    int countIII = count_if(list.begin(), list.end(), [](Point& p) {
+    int countIII = count_if(li.begin(), li.end(), [](Point& p) {
                     return p.position.x < 0.0 && p.position.y < 0.0;
                 });
-    int countIV = count_if(list.begin(), list.end(), [](Point& p) {
+    int countIV = count_if(li.begin(), li.end(), [](Point& p) {
                     return p.position.x > 0.0 && p.position.y < 0.0;
                 });
 
@@ -110,12 +111,31 @@ int main() {
     cout << "Number in IV: " << countIV << endl;
 
     // sort by lumination
-    list.sort([](Point& p1, Point& p2) {
+    li.sort([](Point& p1, Point& p2) {
         return p1.color.lumi() < p2.color.lumi();
     });
 
     cout << endl << "=======   After sort:   =================" << endl;
-    printList(list);
+    printList(li);
+
+    // partition copy
+    int countDark = count_if(li.begin(), li.end(), [](Point& p) {
+                    return p.color.lumi() < 64.0;
+                });
+
+    list<Point> darkPoints = {};
+    darkPoints.resize(countDark);
+
+    list<Point> liPoints = {};
+    liPoints.resize(li.size() - countDark);
+
+    partition_copy(li.begin(), li.end(), darkPoints.begin(), liPoints.begin(), [](Point& p) {
+                    return p.color.lumi() < 64.0;
+                });
+
+    cout << endl << "=======   After partition:   =================" << endl;
+    cout << "count: " << countDark << endl;
+    printList(darkPoints);
 
   	return 0;
 }
