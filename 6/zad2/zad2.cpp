@@ -38,7 +38,7 @@ class Point {
     	string name;
         Coordinates position;
         RGB color;
-        Point(string n, Coordinates p, RGB c) {
+        Point(string n, Coordinates p, RGB c): position(p), color(c) {
             name = n;
             position = p;
             color = c;
@@ -78,13 +78,13 @@ int main() {
     printList(list);
 
     // delete names longer than 5
-    remove_if(list.begin(), list.end(), [](Point& p) {
-        return p.name.length() > 5;
-    });
+    list.erase(remove_if(list.begin(), list.end(), [](Point& p) {
+                    return p.name.length() > 5;
+                }),
+                list.end());
     
     cout << endl << "=======   After delete:   =================" << endl;
     printList(list);
-
 
   	return 0;
 }
